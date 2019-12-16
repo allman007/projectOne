@@ -12,7 +12,7 @@ route.post('/post', (req, res)=>{
     res.json(err)
   })
 })
-
+ 
 //fetch content
 route.get('/post', (req, res)=>{
   Post.find()
