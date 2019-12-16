@@ -6,13 +6,14 @@ const Post = require('../models/post')
 route.post('/post', (req, res)=>{
   const {title, content} = req.body
   Post.create({title, content})
-  .then(post=>res.json(post))
+  .then(post=>{
+    res.json({message:'Post added successfully'})
+  })
   .catch(err=>{
-    console.log(err);
-    res.json(err)
+    res.json({message: 'Post was not added'})
   })
 })
- 
+
 //fetch content
 route.get('/post', (req, res)=>{
   Post.find()
@@ -28,7 +29,8 @@ route.get('/post/:id', (req, res)=>{
 })
 
 //delete a post
-route.delete('/post', (req, res)=>{
+route.post('/deletePost', (req, res)=>{
+  console.log(req.body.id);
   Post.findOneAndDelete({_id:req.body.id})
   .then(post=>res.json(post))
   .catch(err=>res.json(err))
@@ -37,7 +39,8 @@ route.delete('/post', (req, res)=>{
 //update a post
 route.put('/post', (req, res)=>{
   Post.findOneAndUpdate({_id:req.body.id}, {$set:{
-    title: req.body.title
+    title: req.body.title,
+    content: req.body.content
   }}, {upsert:false})
   .then(post=>res.json(post))
   .catch(err=>{
